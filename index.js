@@ -87,6 +87,7 @@ var Geocoder = React.createClass({
   },
   clickOption: function(place) {
     this.props.onSelect(place);
+    return false;
   },
   render: function() {
     /* jshint ignore:start */
