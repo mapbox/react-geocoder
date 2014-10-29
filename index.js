@@ -8,7 +8,9 @@ var Geocoder = React.createClass({
       endpoint: 'http://api.tiles.mapbox.com',
       inputClass: '',
       resultClass: '',
+      resultsClass: '',
       resultFocusClass: 'strong',
+      inputPosition: 'top',
       source: 'mapbox.places-v1'
     };
   },
@@ -23,6 +25,8 @@ var Geocoder = React.createClass({
     source: React.PropTypes.string,
     inputClass: React.PropTypes.string,
     resultClass: React.PropTypes.string,
+    resultsClass: React.PropTypes.string,
+    inputPosition: React.PropTypes.string,
     resultFocusClass: React.PropTypes.string,
     onSelect: React.PropTypes.func.isRequired,
     accessToken: React.PropTypes.string.isRequired
@@ -86,19 +90,25 @@ var Geocoder = React.createClass({
   },
   render: function() {
     /* jshint ignore:start */
+    var input = <input
+      className={this.props.inputClass}
+      onInput={this.onInput}
+      onKeyDown={this.onKeyDown}
+      type='text' />;
     return (
       <div>
-        <input
-          className={this.props.inputClass}
-          onInput={this.onInput}
-          onKeyDown={this.onKeyDown}
-          type='text' />
-        {this.state.results.map(function(result, i) {
-          return <div
-            onClick={this.clickOption.bind(this, result)}
-            className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
-            key={result.id}>{result.place_name}</div>;
-        }.bind(this))}
+        {this.props.inputPosition === 'top' && input}
+        {this.state.results.length > 0 && (
+          <div className={this.props.resultsClass}>
+            {this.state.results.map(function(result, i) {
+              return <div
+                onClick={this.clickOption.bind(this, result)}
+                className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
+                key={result.id}>{result.place_name}</div>;
+            }.bind(this))}
+          </div>
+        )}
+        {this.props.inputPosition === 'bottom' && input}
       </div>
     );
     /* jshint ignore:end */
