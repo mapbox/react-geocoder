@@ -1,0 +1,42 @@
+{
+  "name": "react-geocoder",
+  "version": "1.0.0",
+  "description": "a mapbox geocoder component",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js",
+    "start": "watchify example/site.js -o example/bundle.js & st -nc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mapbox/react-geocoder.git"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "keywords": [
+    "react",
+    "geocoder",
+    "flux",
+    "mapbox",
+    "geo"
+  ],
+  "author": "Tom MacWright",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mapbox/react-geocoder/issues"
+  },
+  "homepage": "https://github.com/mapbox/react-geocoder",
+  "devDependencies": {
+    "browserify": "^6.2.0",
+    "reactify": "^0.14.1",
+    "st": "^0.5.2",
+    "watchify": "^2.1.0"
+  },
+  "dependencies": {
+    "react": "^0.12.0",
+    "xhr": "^1.17.0"
+  }
+}
