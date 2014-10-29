@@ -6,6 +6,9 @@ var Geocoder = React.createClass({
   getDefaultProps: function() {
     return {
       endpoint: 'http://api.tiles.mapbox.com',
+      inputClass: '',
+      resultClass: '',
+      resultFocusClass: 'strong',
       source: 'mapbox.places-v1'
     };
   },
@@ -18,6 +21,9 @@ var Geocoder = React.createClass({
   propTypes: {
     endpoint: React.PropTypes.string,
     source: React.PropTypes.string,
+    inputClass: React.PropTypes.string,
+    resultClass: React.PropTypes.string,
+    resultFocusClass: React.PropTypes.string,
     onSelect: React.PropTypes.func.isRequired,
     accessToken: React.PropTypes.string.isRequired
   },
@@ -83,13 +89,14 @@ var Geocoder = React.createClass({
     return (
       <div>
         <input
+          className={this.props.inputClass}
           onInput={this.onInput}
           onKeyDown={this.onKeyDown}
           type='text' />
         {this.state.results.map(function(result, i) {
           return <div
             onClick={this.clickOption.bind(this, result)}
-            className={i === this.state.focus ? ' loud' : ''}
+            className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
             key={result.id}>{result.place_name}</div>;
         }.bind(this))}
       </div>
