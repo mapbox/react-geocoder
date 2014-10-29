@@ -22,12 +22,20 @@ var Geocoder = React.createClass({
     accessToken: React.PropTypes.string.isRequired
   },
   onInput: function(e) {
-    search(
-      this.props.endpoint,
-      this.props.source,
-      this.props.accessToken,
-      e.target.value,
-      this.onResult);
+    var value = e.target.value;
+    if (value === '') {
+      this.setState({
+        results: [],
+        focus: null
+      });
+    } else {
+      search(
+        this.props.endpoint,
+        this.props.source,
+        this.props.accessToken,
+        value,
+        this.onResult);
+    }
   },
   moveFocus: function(dir) {
     this.setState({
