@@ -42,7 +42,9 @@ var Geocoder = React.createClass({displayName: 'Geocoder',
       endpoint: 'http://api.tiles.mapbox.com',
       inputClass: '',
       resultClass: '',
+      resultsClass: '',
       resultFocusClass: 'strong',
+      inputPosition: 'top',
       source: 'mapbox.places-v1'
     };
   },
@@ -57,6 +59,8 @@ var Geocoder = React.createClass({displayName: 'Geocoder',
     source: React.PropTypes.string,
     inputClass: React.PropTypes.string,
     resultClass: React.PropTypes.string,
+    resultsClass: React.PropTypes.string,
+    inputPosition: React.PropTypes.string,
     resultFocusClass: React.PropTypes.string,
     onSelect: React.PropTypes.func.isRequired,
     accessToken: React.PropTypes.string.isRequired
@@ -117,22 +121,29 @@ var Geocoder = React.createClass({displayName: 'Geocoder',
   },
   clickOption: function(place) {
     this.props.onSelect(place);
+    return false;
   },
   render: function() {
     /* jshint ignore:start */
+    var input = React.DOM.input({
+      className: this.props.inputClass, 
+      onInput: this.onInput, 
+      onKeyDown: this.onKeyDown, 
+      type: "text"});
     return (
       React.DOM.div(null, 
-        React.DOM.input({
-          className: this.props.inputClass, 
-          onInput: this.onInput, 
-          onKeyDown: this.onKeyDown, 
-          type: "text"}), 
-        this.state.results.map(function(result, i) {
-          return React.DOM.div({
-            onClick: this.clickOption.bind(this, result), 
-            className: this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : ''), 
-            key: result.id}, result.place_name);
-        }.bind(this))
+        this.props.inputPosition === 'top' && input, 
+        this.state.results.length > 0 && (
+          React.DOM.div({className: this.props.resultsClass}, 
+            this.state.results.map(function(result, i) {
+              return React.DOM.div({
+                onClick: this.clickOption.bind(this, result), 
+                className: this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : ''), 
+                key: result.id}, result.place_name);
+            }.bind(this))
+          )
+        ), 
+        this.props.inputPosition === 'bottom' && input
       )
     );
     /* jshint ignore:end */
