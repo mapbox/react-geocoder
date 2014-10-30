@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 var React = require('react'),
   search = require('./search');
 
@@ -11,6 +10,7 @@ var Geocoder = React.createClass({
       resultsClass: '',
       resultFocusClass: 'strong',
       inputPosition: 'top',
+      inputPlaceholder: 'Search',
       source: 'mapbox.places-v1'
     };
   },
@@ -27,9 +27,13 @@ var Geocoder = React.createClass({
     resultClass: React.PropTypes.string,
     resultsClass: React.PropTypes.string,
     inputPosition: React.PropTypes.string,
+    inputPlaceholder: React.PropTypes.string,
     resultFocusClass: React.PropTypes.string,
     onSelect: React.PropTypes.func.isRequired,
     accessToken: React.PropTypes.string.isRequired
+  },
+  componentDidMount: function() {
+    this.refs.input.getDOMNode().focus();
   },
   onInput: function(e) {
     var value = e.target.value;
@@ -92,22 +96,26 @@ var Geocoder = React.createClass({
   render: function() {
     /* jshint ignore:start */
     var input = <input
+      ref='input'
       className={this.props.inputClass}
       onInput={this.onInput}
       onKeyDown={this.onKeyDown}
+      placeholder={this.props.inputPlaceholder}
       type='text' />;
     return (
       <div>
         {this.props.inputPosition === 'top' && input}
         {this.state.results.length > 0 && (
-          <div className={this.props.resultsClass}>
+          <ul className={this.props.resultsClass}>
             {this.state.results.map(function(result, i) {
-              return <div
-                onClick={this.clickOption.bind(this, result)}
-                className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
-                key={result.id}>{result.place_name}</div>;
+              return (<li>
+                <a href='#'
+                  onClick={this.clickOption.bind(this, result)}
+                  className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
+                  key={result.id}>{result.place_name}</a>
+              </li>);
             }.bind(this))}
-          </div>
+          </ul>
         )}
         {this.props.inputPosition === 'bottom' && input}
       </div>
