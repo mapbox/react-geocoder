@@ -2,7 +2,7 @@ var React = require('react'),
   search = require('./search');
 
 var Geocoder = React.createClass({
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       endpoint: 'http://api.tiles.mapbox.com',
       inputClass: '',
@@ -14,7 +14,7 @@ var Geocoder = React.createClass({
       source: 'mapbox.places-v1'
     };
   },
-  getInitialState: function() {
+  getInitialState() {
     return {
       results: [],
       focus: null
@@ -32,10 +32,10 @@ var Geocoder = React.createClass({
     onSelect: React.PropTypes.func.isRequired,
     accessToken: React.PropTypes.string.isRequired
   },
-  componentDidMount: function() {
+  componentDidMount() {
     this.refs.input.getDOMNode().focus();
   },
-  onInput: function(e) {
+  onInput(e) {
     var value = e.target.value;
     if (value === '') {
       this.setState({
@@ -51,7 +51,7 @@ var Geocoder = React.createClass({
         this.onResult);
     }
   },
-  moveFocus: function(dir) {
+  moveFocus(dir) {
     this.setState({
       focus: this.state.focus === null ?
         0 : Math.max(0,
@@ -60,12 +60,12 @@ var Geocoder = React.createClass({
             this.state.focus + dir))
     });
   },
-  acceptFocus: function() {
+  acceptFocus() {
     if (this.state.focus !== null) {
       this.props.onSelect(this.state.results[this.state.focus]);
     }
   },
-  onKeyDown: function(e) {
+  onKeyDown(e) {
     switch (e.which) {
       // up
       case 38:
@@ -81,7 +81,7 @@ var Geocoder = React.createClass({
         break;
     }
   },
-  onResult: function(err, res, body) {
+  onResult(err, res, body) {
     if (!err && body && body.features) {
       this.setState({
         results: body.features,
@@ -89,11 +89,11 @@ var Geocoder = React.createClass({
       });
     }
   },
-  clickOption: function(place) {
+  clickOption(place) {
     this.props.onSelect(place);
     return false;
   },
-  render: function() {
+  render() {
     /* jshint ignore:start */
     var input = <input
       ref='input'
@@ -107,14 +107,14 @@ var Geocoder = React.createClass({
         {this.props.inputPosition === 'top' && input}
         {this.state.results.length > 0 && (
           <ul className={this.props.resultsClass}>
-            {this.state.results.map(function(result, i) {
-              return (<li>
+            {this.state.results.map((result, i) => (
+              <li key={result.id}>
                 <a href='#'
                   onClick={this.clickOption.bind(this, result)}
                   className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
                   key={result.id}>{result.place_name}</a>
-              </li>);
-            }.bind(this))}
+              </li>
+            ))}
           </ul>
         )}
         {this.props.inputPosition === 'bottom' && input}

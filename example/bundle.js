@@ -1,54 +1,53 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/tmcw/src/react-geocoder/example/site.js":[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react'),
-  Geocoder = React.createFactory(require('../'));
+"use strict";
 
-var Example = React.createClass({displayName: 'Example',
-  getInitialState: function() {
+/** @jsx React.DOM */
+var React = require("react"), Geocoder = React.createFactory(require("../"));
+
+var Example = React.createClass({
+  displayName: "Example",
+  getInitialState: function () {
     return { value: null };
   },
-  onSelect: function(value) {
+  onSelect: function (value) {
     this.setState({ value: value });
   },
-  render: function() {
+  render: function () {
     /* jshint ignore:start */
-    return (
-      React.DOM.div(null, 
-        React.DOM.div({className: "clearfix pad1 keyline-bottom"}, 
-          Geocoder({
-            accessToken: "pk.eyJ1IjoidG1jdyIsImEiOiJIZmRUQjRBIn0.lRARalfaGHnPdRcc-7QZYQ", 
-            onSelect: this.onSelect}
-            )
-        ), 
-        this.state.value && React.DOM.pre(null, JSON.stringify(this.state.value, null, 2))
-      )
-    );
+    return (React.createElement("div", null, React.createElement("div", {
+      className: "clearfix pad1 keyline-bottom"
+    }, React.createElement(Geocoder, {
+      accessToken: "pk.eyJ1IjoidG1jdyIsImEiOiJIZmRUQjRBIn0.lRARalfaGHnPdRcc-7QZYQ",
+      onSelect: this.onSelect
+    })), this.state.value && React.createElement("pre", null, JSON.stringify(this.state.value, null, 2))));
     /* jshint ignore:end */
   }
 });
 
 /* jshint ignore:start */
-React.render(Example(null), document.getElementById('app'));
+React.render(React.createElement(Example, null), document.getElementById("app"));
 /* jshint ignore:end */
 
 },{"../":"/Users/tmcw/src/react-geocoder/index.js","react":"/Users/tmcw/src/react-geocoder/node_modules/react/react.js"}],"/Users/tmcw/src/react-geocoder/index.js":[function(require,module,exports){
-/** @jsx React.DOM */
-var React = require('react'),
-  search = require('./search');
+"use strict";
 
-var Geocoder = React.createClass({displayName: 'Geocoder',
-  getDefaultProps: function() {
+var React = require("react"), search = require("./search");
+
+var Geocoder = React.createClass({
+  displayName: "Geocoder",
+  getDefaultProps: function () {
     return {
-      endpoint: 'http://api.tiles.mapbox.com',
-      inputClass: '',
-      resultClass: '',
-      resultsClass: '',
-      resultFocusClass: 'strong',
-      inputPosition: 'top',
-      source: 'mapbox.places-v1'
+      endpoint: "http://api.tiles.mapbox.com",
+      inputClass: "",
+      resultClass: "",
+      resultsClass: "",
+      resultFocusClass: "strong",
+      inputPosition: "top",
+      inputPlaceholder: "Search",
+      source: "mapbox.places-v1"
     };
   },
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       results: [],
       focus: null
@@ -61,41 +60,36 @@ var Geocoder = React.createClass({displayName: 'Geocoder',
     resultClass: React.PropTypes.string,
     resultsClass: React.PropTypes.string,
     inputPosition: React.PropTypes.string,
+    inputPlaceholder: React.PropTypes.string,
     resultFocusClass: React.PropTypes.string,
     onSelect: React.PropTypes.func.isRequired,
     accessToken: React.PropTypes.string.isRequired
   },
-  onInput: function(e) {
+  componentDidMount: function () {
+    this.refs.input.getDOMNode().focus();
+  },
+  onInput: function (e) {
     var value = e.target.value;
-    if (value === '') {
+    if (value === "") {
       this.setState({
         results: [],
         focus: null
       });
     } else {
-      search(
-        this.props.endpoint,
-        this.props.source,
-        this.props.accessToken,
-        value,
-        this.onResult);
+      search(this.props.endpoint, this.props.source, this.props.accessToken, value, this.onResult);
     }
   },
-  moveFocus: function(dir) {
+  moveFocus: function (dir) {
     this.setState({
-      focus: this.state.focus === null ?
-        0 : Math.max(0,
-          Math.min(
-            this.state.results.length - 1,
-            this.state.focus + dir))
+      focus: this.state.focus === null ? 0 : Math.max(0, Math.min(this.state.results.length - 1, this.state.focus + dir))
     });
   },
-  acceptFocus: function() {
+  acceptFocus: function () {
     if (this.state.focus !== null) {
       this.props.onSelect(this.state.results[this.state.focus]);
     }
   },
-  onKeyDown: function(e) {
+  onKeyDown: function (e) {
     switch (e.which) {
       // up
       case 38:
@@ -111,7 +105,7 @@ var Geocoder = React.createClass({displayName: 'Geocoder',
         break;
     }
   },
-  onResult: function(err, res, body) {
+  onResult: function (err, res, body) {
     if (!err && body && body.features) {
       this.setState({
         results: body.features,
@@ -119,33 +113,33 @@ var Geocoder = React.createClass({displayName: 'Geocoder',
       });
     }
   },
-  clickOption: function(place) {
+  clickOption: function (place) {
     this.props.onSelect(place);
     return false;
   },
-  render: function() {
+  render: function () {
+    var _this = this;
     /* jshint ignore:start */
-    var input = React.DOM.input({
-      className: this.props.inputClass, 
-      onInput: this.onInput, 
-      onKeyDown: this.onKeyDown, 
-      type: "text"});
-    return (
-      React.DOM.div(null, 
-        this.props.inputPosition === 'top' && input, 
-        this.state.results.length > 0 && (
-          React.DOM.div({className: this.props.resultsClass}, 
-            this.state.results.map(function(result, i) {
-              return React.DOM.div({
-                onClick: this.clickOption.bind(this, result), 
-                className: this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : ''), 
-                key: result.id}, result.place_name);
-            }.bind(this))
-          )
-        ), 
-        this.props.inputPosition === 'bottom' && input
-      )
-    );
+    var input = React.createElement("input", {
+      ref: "input",
+      className: this.props.inputClass,
+      onInput: this.onInput,
+      onKeyDown: this.onKeyDown,
+      placeholder: this.props.inputPlaceholder,
+      type: "text"
+    });
+    return (React.createElement("div", null, this.props.inputPosition === "top" && input, this.state.results.length > 0 && (React.createElement("ul", {
+      className: this.props.resultsClass
+    }, this.state.results.map(function (result, i) {
+      return (React.createElement("li", {
+        key: result.id
+      }, React.createElement("a", {
+        href: "#",
+        onClick: _this.clickOption.bind(_this, result),
+        className: _this.props.resultClass + " " + (i === _this.state.focus ? _this.props.resultFocusClass : ""),
+        key: result.id
+      }, result.place_name)));
+    }))), this.props.inputPosition === "bottom" && input));
     /* jshint ignore:end */
   }
 });
@@ -4465,7 +4459,7 @@ if ("production" !== process.env.NODE_ENV) {
 
 // Version exists only in the open-source version of React, not in Facebook's
 // internal version.
-React.version = '0.12.0';
+React.version = '0.12.1';
 
 module.exports = React;
 
@@ -6896,7 +6890,7 @@ var ReactCompositeComponentMixin = {
       boundMethod.__reactBoundArguments = null;
       var componentName = component.constructor.displayName;
       var _bind = boundMethod.bind;
-      boundMethod.bind = function(newThis ) {var args=Array.prototype.slice.call(arguments,1);
+      boundMethod.bind = function(newThis ) {for (var args=[],$__0=1,$__1=arguments.length;$__0<$__1;$__0++) args.push(arguments[$__0]);
         // User is trying to bind() an autobound method; we effectively will
         // ignore the value of "this" that the user is trying to use, so
         // let's warn.
@@ -9245,7 +9239,7 @@ var ReactDefaultPerf = {
   },
 
   measure: function(moduleName, fnName, func) {
-    return function() {var args=Array.prototype.slice.call(arguments,0);
+    return function() {for (var args=[],$__0=0,$__1=arguments.length;$__0<$__1;$__0++) args.push(arguments[$__0]);
       var totalTime;
       var rv;
       var start;
@@ -18424,7 +18418,7 @@ var emptyFunction = require("./emptyFunction");
 var warning = emptyFunction;
 
 if ("production" !== process.env.NODE_ENV) {
-  warning = function(condition, format ) {var args=Array.prototype.slice.call(arguments,2);
+  warning = function(condition, format ) {for (var args=[],$__0=2,$__1=arguments.length;$__0<$__1;$__0++) args.push(arguments[$__0]);
     if (format === undefined) {
       throw new Error(
         '`warning(condition, format, ...args)` requires a warning ' +
@@ -18771,12 +18765,12 @@ module.exports = function (headers) {
   return result
 }
 },{"for-each":"/Users/tmcw/src/react-geocoder/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js","trim":"/Users/tmcw/src/react-geocoder/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js"}],"/Users/tmcw/src/react-geocoder/search.js":[function(require,module,exports){
-var xhr = require('xhr');
+"use strict";
+
+var xhr = require("xhr");
 
 function search(endpoint, source, accessToken, query, callback) {
-  var uri = endpoint + '/v4/geocode/' +
-    source + '/' + encodeURIComponent(query) + '.json' +
-    '?access_token=' + accessToken;
+  var uri = endpoint + "/v4/geocode/" + source + "/" + encodeURIComponent(query) + ".json" + "?access_token=" + accessToken;
   xhr({
     uri: uri,
     json: true

@@ -1,0 +1,25 @@
+{
+    "evil": true,
+    "smarttabs": true,
+    "strict": false,
+    "globalstrict": false,
+    "asi": false,
+    "browser": true,
+    "noarg": true,
+    "undef": true,
+    "eqeqeq": true,
+    "esnext": true,
+    "freeze": true,
+    "quotmark": "single",
+    "node": true,
+    "globals": {
+        "require": true,
+        "console": true,
+        "Raven": true,
+        "module": true,
+        "confirm": true,
+        "prompt": true,
+        "alert": true,
+        "mapboxgl": true
+    }
+}
