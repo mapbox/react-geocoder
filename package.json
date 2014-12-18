@@ -31,13 +31,13 @@
   },
   "homepage": "https://github.com/mapbox/react-geocoder",
   "devDependencies": {
-    "6to5ify": "^1.4.0",
     "browserify": "^6.2.0",
     "st": "^0.5.2",
     "watchify": "^2.1.0"
   },
   "dependencies": {
-    "xhr": "^1.17.0"
+    "xhr": "^1.17.0",
+    "6to5ify": "^1.4.0"
   },
   "peerDependencies": {
     "react": "0.12.x"
