@@ -13,7 +13,7 @@
   },
   "browserify": {
     "transform": [
-      "6to5ify"
+      "babelify"
     ]
   },
   "keywords": [
@@ -37,9 +37,7 @@
   },
   "dependencies": {
     "xhr": "^1.17.0",
-    "6to5ify": "^1.4.0"
-  },
-  "peerDependencies": {
+    "babelify": "^5.0.0",
     "react": "0.12.x"
   }
 }
