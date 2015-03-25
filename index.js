@@ -1,10 +1,14 @@
+'use strict';
+
 var React = require('react'),
-  search = require('./search');
+    search = require('./search');
 
 var Geocoder = React.createClass({
-  getDefaultProps() {
+  displayName: 'Geocoder',
+
+  getDefaultProps: function getDefaultProps() {
     return {
-      endpoint: 'http://api.tiles.mapbox.com',
+      endpoint: 'https://api.tiles.mapbox.com',
       inputClass: '',
       resultClass: '',
       resultsClass: '',
@@ -14,7 +18,7 @@ var Geocoder = React.createClass({
       source: 'mapbox.places-v1'
     };
   },
-  getInitialState() {
+  getInitialState: function getInitialState() {
     return {
       results: [],
       focus: null
@@ -32,10 +36,10 @@ var Geocoder = React.createClass({
     onSelect: React.PropTypes.func.isRequired,
     accessToken: React.PropTypes.string.isRequired
   },
-  componentDidMount() {
+  componentDidMount: function componentDidMount() {
     this.refs.input.getDOMNode().focus();
   },
-  onInput(e) {
+  onInput: function onInput(e) {
     var value = e.target.value;
     if (value === '') {
       this.setState({
@@ -43,29 +47,20 @@ var Geocoder = React.createClass({
         focus: null
       });
     } else {
-      search(
-        this.props.endpoint,
-        this.props.source,
-        this.props.accessToken,
-        value,
-        this.onResult);
+      search(this.props.endpoint, this.props.source, this.props.accessToken, value, this.onResult);
     }
   },
-  moveFocus(dir) {
+  moveFocus: function moveFocus(dir) {
     this.setState({
-      focus: this.state.focus === null ?
-        0 : Math.max(0,
-          Math.min(
-            this.state.results.length - 1,
-            this.state.focus + dir))
+      focus: this.state.focus === null ? 0 : Math.max(0, Math.min(this.state.results.length - 1, this.state.focus + dir))
     });
   },
-  acceptFocus() {
+  acceptFocus: function acceptFocus() {
     if (this.state.focus !== null) {
       this.props.onSelect(this.state.results[this.state.focus]);
     }
   },
-  onKeyDown(e) {
+  onKeyDown: function onKeyDown(e) {
     switch (e.which) {
       // up
       case 38:
@@ -81,7 +76,7 @@ var Geocoder = React.createClass({
         break;
     }
   },
-  onResult(err, res, body) {
+  onResult: function onResult(err, res, body) {
     if (!err && body && body.features) {
       this.setState({
         results: body.features,
@@ -89,39 +84,48 @@ var Geocoder = React.createClass({
       });
     }
   },
-  clickOption(place) {
+  clickOption: function clickOption(place) {
     this.props.onSelect(place);
     return false;
   },
-  render() {
+  render: function render() {
+    var _this = this;
+
     /* jshint ignore:start */
-    var input = <input
-      ref='input'
-      className={this.props.inputClass}
-      onInput={this.onInput}
-      onKeyDown={this.onKeyDown}
-      placeholder={this.props.inputPlaceholder}
-      type='text' />;
-    return (
-      <div>
-        {this.props.inputPosition === 'top' && input}
-        {this.state.results.length > 0 && (
-          <ul className={this.props.resultsClass}>
-            {this.state.results.map((result, i) => (
-              <li key={result.id}>
-                <a href='#'
-                  onClick={this.clickOption.bind(this, result)}
-                  className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
-                  key={result.id}>{result.place_name}</a>
-              </li>
-            ))}
-          </ul>
-        )}
-        {this.props.inputPosition === 'bottom' && input}
-      </div>
+    var input = React.createElement('input', {
+      ref: 'input',
+      className: this.props.inputClass,
+      onInput: this.onInput,
+      onKeyDown: this.onKeyDown,
+      placeholder: this.props.inputPlaceholder,
+      type: 'text' });
+    return React.createElement(
+      'div',
+      null,
+      this.props.inputPosition === 'top' ? input : null,
+      this.state.results.length > 0 && React.createElement(
+        'ul',
+        { className: this.props.resultsClass },
+        this.state.results.map(function (result, i) {
+          return React.createElement(
+            'li',
+            { key: 'geocoder-' + result.id },
+            React.createElement(
+              'a',
+              { href: '#',
+                onClick: _this.clickOption.bind(_this, result),
+                className: _this.props.resultClass + ' ' + (i === _this.state.focus ? _this.props.resultFocusClass : '')
+              },
+              result.place_name
+            )
+          );
+        })
+      ),
+      this.props.inputPosition === 'bottom' ? input : null
     );
     /* jshint ignore:end */
   }
 });
 
 module.exports = Geocoder;
+
