@@ -4,7 +4,7 @@ var React = require('react'),
 var Geocoder = React.createClass({
   getDefaultProps() {
     return {
-      endpoint: 'http://api.tiles.mapbox.com',
+      endpoint: 'https://api.tiles.mapbox.com',
       inputClass: '',
       resultClass: '',
       resultsClass: '',
