@@ -11,11 +11,6 @@
     "type": "git",
     "url": "git@github.com:mapbox/react-geocoder.git"
   },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
-  },
   "keywords": [
     "react",
     "react-component",
@@ -36,8 +31,7 @@
     "watchify": "^2.1.0"
   },
   "dependencies": {
-    "xhr": "^1.17.0",
-    "babelify": "^5.0.0",
-    "react": "0.12.x"
+    "xhr": "~1.17.0",
+    "react": "~0.12.x"
   }
 }
