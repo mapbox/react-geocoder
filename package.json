@@ -1,6 +1,6 @@
 {
   "name": "react-geocoder",
-  "version": "1.6.4",
+  "version": "2.0.0",
   "description": "a mapbox geocoder component",
   "main": "index.js",
   "scripts": {
