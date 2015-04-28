@@ -1,6 +1,10 @@
 var React = require('react'),
   search = require('./search');
 
+/**
+ * Geocoder component: connects to Mapbox.com Geocoding API
+ * and provides an autocompleting interface for finding locations.
+ */
 var Geocoder = React.createClass({
   getDefaultProps() {
     return {
@@ -94,7 +98,6 @@ var Geocoder = React.createClass({
     return false;
   },
   render() {
-    /* jshint ignore:start */
     var input = <input
       ref='input'
       className={this.props.inputClass}
@@ -120,7 +123,6 @@ var Geocoder = React.createClass({
         {this.props.inputPosition === 'bottom' && input}
       </div>
     );
-    /* jshint ignore:end */
   }
 });
 
