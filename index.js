@@ -22,7 +22,8 @@ var Geocoder = React.createClass({
   getInitialState() {
     return {
       results: [],
-      focus: null
+      focus: null,
+      searchTime: new Date()
     };
   },
   propTypes: {
@@ -88,9 +89,13 @@ var Geocoder = React.createClass({
         break;
     }
   },
-  onResult(err, res, body) {
-    if (!err && body && body.features) {
+  onResult(err, res, body, searchTime) {
+    // searchTime is compared with the last search to set the state
+    // to ensure that a slow xhr response does not scramble the
+    // sequence of autocomplete display.
+    if (!err && body && body.features && this.state.searchTime <= searchTime) {
       this.setState({
+        searchTime: searchTime,
         results: body.features,
         focus: null
       });
