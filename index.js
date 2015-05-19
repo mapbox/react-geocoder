@@ -15,7 +15,7 @@ var Geocoder = React.createClass({
       resultFocusClass: 'strong',
       inputPosition: 'top',
       inputPlaceholder: 'Search',
-      source: 'mapbox.places-v1',
+      source: 'mapbox.places',
       proximity: ''
     };
   },
