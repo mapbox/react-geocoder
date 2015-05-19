@@ -10,7 +10,7 @@ An `accessToken` is assumed to be a valid Mapbox accessToken.
 <Geocoder
   accessToken=required string
   onSelect=required function
-  source=optional string, default 'mapbox.places-v1'
+  source=optional string, default 'mapbox.places'
   endpoint=optional string, default 'http://api.tiles.mapbox.com'
   inputClass=optional string, default ''
   inputPlaceholder=optional string, default 'Search'
@@ -18,5 +18,6 @@ An `accessToken` is assumed to be a valid Mapbox accessToken.
   resultsClass=optional string, default ''
   inputPosition=optional string, default 'top', can be 'bottom'
   resultFocusClass=optional string, default 'strong'
+  proximity=optional string, default ''
   />
 ```
