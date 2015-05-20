@@ -1,6 +1,7 @@
 var xhr = require('xhr');
 
 function search(endpoint, source, accessToken, proximity, query, callback) {
+  var searchTime = new Date();
   var uri = endpoint + '/v4/geocode/' +
     source + '/' + encodeURIComponent(query) + '.json' +
     '?access_token=' + accessToken +
@@ -8,7 +9,9 @@ function search(endpoint, source, accessToken, proximity, query, callback) {
   xhr({
     uri: uri,
     json: true
-  }, callback);
+  }, function(err, res, body) {
+    callback(err, res, body, searchTime);
+  });
 }
 
 module.exports = search;
