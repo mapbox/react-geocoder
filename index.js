@@ -44,7 +44,7 @@ var Geocoder = React.createClass({
     focusOnMount: React.PropTypes.bool
   },
   componentDidMount() {
-    if (this.props.focusOnMount) this.refs.input.getDOMNode().focus();
+    if (this.props.focusOnMount) React.findDOMNode(this.refs.input).focus();
   },
   onInput(e) {
     var value = e.target.value;
