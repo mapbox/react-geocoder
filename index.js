@@ -17,7 +17,8 @@ var Geocoder = React.createClass({
       inputPlaceholder: 'Search',
       source: 'mapbox.places',
       proximity: '',
-      onSuggest: function() {}
+      onSuggest: function() {},
+      focusOnMount: true
     };
   },
   getInitialState() {
@@ -39,10 +40,11 @@ var Geocoder = React.createClass({
     onSelect: React.PropTypes.func.isRequired,
     onSuggest: React.PropTypes.func,
     accessToken: React.PropTypes.string.isRequired,
-    proximity: React.PropTypes.string
+    proximity: React.PropTypes.string,
+    focusOnMount: React.PropTypes.bool
   },
   componentDidMount() {
-    this.refs.input.getDOMNode().focus();
+    if (this.props.focusOnMount) React.findDOMNode(this.refs.input).focus();
   },
   onInput(e) {
     var value = e.target.value;
