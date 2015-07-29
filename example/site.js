@@ -1,6 +1,5 @@
-/** @jsx React.DOM */
 var React = require('react'),
-  Geocoder = React.createFactory(require('../'));
+  Geocoder = require('../');
 
 var Example = React.createClass({
   getInitialState: function() {
