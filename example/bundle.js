@@ -20,15 +20,16 @@ var Example = React.createClass({
       null,
       React.createElement(
         'div',
-        { className: 'clearfix pad1 keyline-bottom' },
+        { className: 'clearfix pad1' },
         React.createElement(Geocoder, {
           accessToken: 'pk.eyJ1IjoidG1jdyIsImEiOiJIZmRUQjRBIn0.lRARalfaGHnPdRcc-7QZYQ',
-          onSelect: this.onSelect
+          onSelect: this.onSelect,
+          showLoader: true
         })
       ),
       this.state.value && React.createElement(
         'pre',
-        null,
+        { className: 'keyline-all' },
         JSON.stringify(this.state.value, null, 2)
       )
     );
@@ -39,6 +40,11 @@ var Example = React.createClass({
 /* jshint ignore:start */
 React.render(React.createElement(Example, null), document.getElementById('app'));
 /* jshint ignore:end */
+/* Geocoder:
+   accessToken -- Mapbox developer access token (required)
+   onSelect    -- function called after selecting result (required)
+   showLoader  -- Boolean to attach `.loading` class to results list
+*/
 
 },{"../":2,"react":157}],2:[function(require,module,exports){
 'use strict';
@@ -62,6 +68,7 @@ var Geocoder = React.createClass({
       resultFocusClass: 'strong',
       inputPosition: 'top',
       inputPlaceholder: 'Search',
+      showLoader: false,
       source: 'mapbox.places',
       proximity: '',
       onSuggest: function onSuggest() {},
@@ -72,6 +79,7 @@ var Geocoder = React.createClass({
     return {
       results: [],
       focus: null,
+      loading: false,
       searchTime: new Date()
     };
   },
@@ -88,17 +96,20 @@ var Geocoder = React.createClass({
     onSuggest: React.PropTypes.func,
     accessToken: React.PropTypes.string.isRequired,
     proximity: React.PropTypes.string,
+    showLoader: React.PropTypes.bool,
     focusOnMount: React.PropTypes.bool
   },
   componentDidMount: function componentDidMount() {
     if (this.props.focusOnMount) React.findDOMNode(this.refs.input).focus();
   },
   onInput: function onInput(e) {
+    this.setState({ loading: true });
     var value = e.target.value;
     if (value === '') {
       this.setState({
         results: [],
-        focus: null
+        focus: null,
+        loading: false
       });
     } else {
       search(this.props.endpoint, this.props.source, this.props.accessToken, this.props.proximity, value, this.onResult);
@@ -140,6 +151,7 @@ var Geocoder = React.createClass({
     if (!err && body && body.features && this.state.searchTime <= searchTime) {
       this.setState({
         searchTime: searchTime,
+        loading: false,
         results: body.features,
         focus: null
       });
@@ -166,7 +178,7 @@ var Geocoder = React.createClass({
       this.props.inputPosition === 'top' && input,
       this.state.results.length > 0 && React.createElement(
         'ul',
-        { className: this.props.resultsClass },
+        { className: (this.props.showLoader && this.state.loading ? 'loading' : '') + ' ' + this.props.resultsClass },
         this.state.results.map(function (result, i) {
           return React.createElement(
             'li',
