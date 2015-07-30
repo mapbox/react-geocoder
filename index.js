@@ -69,6 +69,7 @@ var Geocoder = React.createClass({
     }
   },
   moveFocus(dir) {
+    if(this.state.loading) return;
     this.setState({
       focus: this.state.focus === null ?
         0 : Math.max(0,
