@@ -165,7 +165,7 @@ var Geocoder = React.createClass({
     this.setState({ focus: listLocation });
     // focus on the input after click to maintain key traversal
     React.findDOMNode(this.refs.input).focus();
-    event.preventDefault();
+    return event.stopPropagation();
   },
   render: function render() {
     var _this = this;
