@@ -17,6 +17,7 @@ An `accessToken` is assumed to be a valid Mapbox accessToken.
   inputPlaceholder=optional string, default 'Search'
   resultClass=optional string, default ''
   resultsClass=optional string, default ''
+  showLoader=optional string, default ''
   inputPosition=optional string, default 'top', can be 'bottom'
   resultFocusClass=optional string, default 'strong'
   proximity=optional string, default '',

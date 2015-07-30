@@ -15,6 +15,7 @@ var Geocoder = React.createClass({
       resultFocusClass: 'strong',
       inputPosition: 'top',
       inputPlaceholder: 'Search',
+      showLoader: false,
       source: 'mapbox.places',
       proximity: '',
       onSuggest: function() {},
@@ -25,6 +26,7 @@ var Geocoder = React.createClass({
     return {
       results: [],
       focus: null,
+      loading: false,
       searchTime: new Date()
     };
   },
@@ -41,17 +43,20 @@ var Geocoder = React.createClass({
     onSuggest: React.PropTypes.func,
     accessToken: React.PropTypes.string.isRequired,
     proximity: React.PropTypes.string,
+    showLoader: React.PropTypes.bool,
     focusOnMount: React.PropTypes.bool
   },
   componentDidMount() {
     if (this.props.focusOnMount) React.findDOMNode(this.refs.input).focus();
   },
   onInput(e) {
+    this.setState({loading:true});
     var value = e.target.value;
     if (value === '') {
       this.setState({
         results: [],
-        focus: null
+        focus: null,
+        loading:false
       });
     } else {
       search(
@@ -64,6 +69,7 @@ var Geocoder = React.createClass({
     }
   },
   moveFocus(dir) {
+    if(this.state.loading) return;
     this.setState({
       focus: this.state.focus === null ?
         0 : Math.max(0,
@@ -81,6 +87,7 @@ var Geocoder = React.createClass({
     switch (e.which) {
       // up
       case 38:
+        e.preventDefault();
         this.moveFocus(-1);
         break;
       // down
@@ -89,6 +96,9 @@ var Geocoder = React.createClass({
         break;
       // accept
       case 13:
+        if( this.state.results.length > 0 && this.state.focus == null) {
+          this.clickOption(this.state.results[0],0);
+        }
         this.acceptFocus();
         break;
     }
@@ -100,14 +110,18 @@ var Geocoder = React.createClass({
     if (!err && body && body.features && this.state.searchTime <= searchTime) {
       this.setState({
         searchTime: searchTime,
+        loading: false,
         results: body.features,
         focus: null
       });
       this.props.onSuggest(this.state.results);
     }
   },
-  clickOption(place) {
+  clickOption(place, listLocation) {
     this.props.onSelect(place);
+    this.setState({focus:listLocation});
+    // focus on the input after click to maintain key traversal
+    React.findDOMNode(this.refs.input).focus();
     return false;
   },
   render() {
@@ -122,11 +136,11 @@ var Geocoder = React.createClass({
       <div>
         {this.props.inputPosition === 'top' && input}
         {this.state.results.length > 0 && (
-          <ul className={this.props.resultsClass}>
+          <ul className={`${this.props.showLoader && this.state.loading ? 'loading' : ''} ${this.props.resultsClass}`}>
             {this.state.results.map((result, i) => (
               <li key={result.id}>
                 <a href='#'
-                  onClick={this.clickOption.bind(this, result)}
+                  onClick={this.clickOption.bind(this, result, i)}
                   className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
                   key={result.id}>{result.place_name}</a>
               </li>

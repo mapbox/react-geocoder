@@ -1,3 +1,6 @@
 .loud {
     font-weight:bold;
 }
+ul.loading {
+  position: relative;
+}
