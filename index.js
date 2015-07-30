@@ -87,6 +87,7 @@ var Geocoder = React.createClass({
     switch (e.which) {
       // up
       case 38:
+        e.preventDefault();
         this.moveFocus(-1);
         break;
       // down
