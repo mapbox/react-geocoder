@@ -97,8 +97,7 @@ var Geocoder = React.createClass({
       // accept
       case 13:
         if( this.state.results.length > 0 && this.state.focus == null) {
-          this.setState({focus:0});
-          this.clickOption(this.state.results[0]);
+          this.clickOption(this.state.results[0],0);
         }
         this.acceptFocus();
         break;
@@ -118,9 +117,10 @@ var Geocoder = React.createClass({
       this.props.onSuggest(this.state.results);
     }
   },
-  clickOption(place) {
+  clickOption(place, listLocation, event) {
     this.props.onSelect(place);
-    return false;
+    this.setState({focus:listLocation});
+    event.preventDefault();
   },
   render() {
     var input = <input
@@ -138,7 +138,7 @@ var Geocoder = React.createClass({
             {this.state.results.map((result, i) => (
               <li key={result.id}>
                 <a href='#'
-                  onClick={this.clickOption.bind(this, result)}
+                  onClick={this.clickOption.bind(this, result, i, event)}
                   className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
                   key={result.id}>{result.place_name}</a>
               </li>
