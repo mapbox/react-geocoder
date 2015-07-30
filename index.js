@@ -96,6 +96,7 @@ var Geocoder = React.createClass({
       // accept
       case 13:
         if( this.state.results.length > 0 ) {
+          this.setState({focus:0});
           this.clickOption(this.state.results[0]);
         }
         this.acceptFocus();
