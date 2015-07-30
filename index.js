@@ -117,12 +117,12 @@ var Geocoder = React.createClass({
       this.props.onSuggest(this.state.results);
     }
   },
-  clickOption(place, listLocation, event) {
+  clickOption(place, listLocation) {
     this.props.onSelect(place);
     this.setState({focus:listLocation});
     // focus on the input after click to maintain key traversal
     React.findDOMNode(this.refs.input).focus();
-    return event.stopPropagation();
+    return false;
   },
   render() {
     var input = <input
@@ -140,7 +140,7 @@ var Geocoder = React.createClass({
             {this.state.results.map((result, i) => (
               <li key={result.id}>
                 <a href='#'
-                  onClick={this.clickOption.bind(this, result, i, event)}
+                  onClick={this.clickOption.bind(this, result, i)}
                   className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
                   key={result.id}>{result.place_name}</a>
               </li>
