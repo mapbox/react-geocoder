@@ -1,4 +1,5 @@
 var React = require('react'),
+  ReactDOM = require('react-dom'),
   search = require('./search');
 
 /**
@@ -49,7 +50,7 @@ var Geocoder = React.createClass({
     focusOnMount: React.PropTypes.bool
   },
   componentDidMount() {
-    if (this.props.focusOnMount) React.findDOMNode(this.refs.input).focus();
+    if (this.props.focusOnMount) ReactDOM.findDOMNode(this.refs.input).focus();
   },
   onInput(e) {
     this.setState({loading:true});
@@ -124,7 +125,7 @@ var Geocoder = React.createClass({
     this.props.onSelect(place);
     this.setState({focus:listLocation});
     // focus on the input after click to maintain key traversal
-    React.findDOMNode(this.refs.input).focus();
+    ReactDOM.findDOMNode(this.refs.input).focus();
     return false;
   },
   render() {
