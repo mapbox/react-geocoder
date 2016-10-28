@@ -68,6 +68,7 @@ var Geocoder = React.createClass({
         this.props.accessToken,
         this.props.proximity,
         this.props.bbox,
+        this.props.types,
         value,
         this.onResult);
     }

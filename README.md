@@ -22,6 +22,7 @@ An `accessToken` is assumed to be a valid Mapbox accessToken.
   resultFocusClass=optional string, default 'strong'
   proximity=optional string, default '',
   bbox=optional string, default '',
+  types=optional string, default '',
   focusOnMount=optional bool, default true
   />
 ```
