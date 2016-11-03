@@ -20,6 +20,7 @@ var Geocoder = React.createClass({
       source: 'mapbox.places',
       proximity: '',
       bbox: '',
+      types: '',
       onSuggest: function() {},
       focusOnMount: true
     };
