@@ -22,6 +22,8 @@ An `accessToken` is assumed to be a valid Mapbox accessToken.
   resultFocusClass=optional string, default 'strong'
   proximity=optional string, default '',
   bbox=optional string, default '',
+  limit=optional number, default 5 for forward, 1 for reverse
+    (a single `type` must be specified to use the `limit` parameter for reverse queries)
   focusOnMount=optional bool, default true
   />
 ```
