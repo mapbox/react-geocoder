@@ -20,6 +20,7 @@ var Geocoder = React.createClass({
       source: 'mapbox.places',
       proximity: '',
       bbox: '',
+      types: '',
       onSuggest: function() {},
       focusOnMount: true
     };
@@ -47,7 +48,8 @@ var Geocoder = React.createClass({
     proximity: React.PropTypes.string,
     bbox: React.PropTypes.string,
     showLoader: React.PropTypes.bool,
-    focusOnMount: React.PropTypes.bool
+    focusOnMount: React.PropTypes.bool,
+    types: React.PropTypes.string
   },
   componentDidMount() {
     if (this.props.focusOnMount) ReactDOM.findDOMNode(this.refs.input).focus();
@@ -68,6 +70,7 @@ var Geocoder = React.createClass({
         this.props.accessToken,
         this.props.proximity,
         this.props.bbox,
+        this.props.types,
         value,
         this.onResult);
     }
