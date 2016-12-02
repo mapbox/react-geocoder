@@ -1,5 +1,9 @@
 # react-geocoder
 
+```
+npm install @mapbox/react-geocoder
+```
+
 A geocoder component using Mapbox.
 
 ## api
