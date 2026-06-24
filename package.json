@@ -1,6 +1,6 @@
 {
   "name": "@mapbox/react-geocoder",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "a mapbox geocoder component",
   "main": "index.js",
   "scripts": {
@@ -40,5 +40,8 @@
     "xhr": "^1.17.0",
     "babelify": "^6.0.0",
     "react": "0.13.x"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
